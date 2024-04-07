@@ -1,7 +1,4 @@
 #!/bin/bash
-if [ ! -d "log" ]; then
-    mkdir log
-fi
 
 pid=$(cat ./user_upload_files/.web.pid.txt)
 kill $pid
