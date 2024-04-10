@@ -17,7 +17,7 @@ import toast from "react-hot-toast";
 const SettingsOpenKey = () => {
   const [form] = Form.useForm();
   const [disabled, setDisabled] = useState(false);
-  const [aiOption, setAiOption] = useState("DeepInsight"); // 默认选项
+  const [aiOption, setAiOption] = useState("OpenAI"); // 默认选项
 
   const getOpenKey = useCallback(async () => {
     setDisabled(true);
@@ -26,9 +26,8 @@ const SettingsOpenKey = () => {
       form.setFieldsValue(data);
     } else {
       setAiOption(data.in_use);
-      const { OpenAI = {}, DeepInsight = {}, Azure = {} } = data;
+      const { OpenAI = {}, Azure = {} } = data;
       form.setFieldsValue({
-        ApiKey: DeepInsight.ApiKey || "",
         OpenaiApiKey: OpenAI.OpenaiApiKey || "",
         HttpProxyHost: OpenAI.HttpProxyHost || "",
         HttpProxyPort: OpenAI.HttpProxyPort || "",
@@ -52,9 +51,6 @@ const SettingsOpenKey = () => {
         HttpProxyHost: form.getFieldValue("HttpProxyHost") || "",
         HttpProxyPort: form.getFieldValue("HttpProxyPort") || "",
         ApiHost: form.getFieldValue("ApiHost") || "",
-      },
-      DeepInsight: {
-        ApiKey: form.getFieldValue("ApiKey") || "",
       },
       Azure: {
         AzureApiKey: form.getFieldValue("AzureApiKey") || "",
@@ -145,20 +141,11 @@ const SettingsOpenKey = () => {
             <div style={{ display: "flex", alignItems: "center" }}>
               <h4 style={{ marginRight: "30px" }}>AI:</h4>
               <Radio.Group onChange={handleRadioChange} value={aiOption}>
-                <Radio value="DeepInsight">DeepInsight</Radio>
                 <Radio value="OpenAI">OpenAI</Radio>
                 <Radio value="Azure">Azure</Radio>
               </Radio.Group>
             </div>
           </Form.Item>
-          {aiOption === "DeepInsight" && (
-            <Form.Item
-              name="ApiKey"
-              label="ApiKey"
-              rules={[{ required: true, message: window.W_L.please_enter_api_key }]}>
-              <Input placeholder="ApiKey" />
-            </Form.Item>
-          )}
 
           {aiOption === "OpenAI" && (
             <>
